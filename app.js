@@ -12,6 +12,8 @@ app.set("views", path.join(__dirname, "views"));
 //this is also valid way to render the ejs template
 //app.set("views", "./views/listings");
 
+app.use(express.urlencoded({ extended: true }));
+
 main()
   .then(() => {
     console.log("connected to db");
@@ -28,13 +30,17 @@ app.get("/", (req, res) => {
   res.send("Hi, I am root.");
 });
 
+//Index route
 app.get("/listings", async (req, res) => {
   const allListings = await Listing.find({});
   res.render("./listings/index.ejs", { allListings });
 });
 
-app.get("/listings/show", (req, res) => {
-  res.send("this is from the show route");
+//show route
+app.get("/listings/:id", async (req, res) => {
+  const { id } = req.params;
+  const listing = await Listing.findById(id);
+  res.render("./listings/show.ejs", { listing });
 });
 
 // app.get("/testListing", async (req, res) => {
