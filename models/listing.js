@@ -11,13 +11,18 @@ const listingSchema = new Schema({
     type: String,
   },
   image: {
-    type: String,
-    default:
-      "https://unsplash.com/photos/river-between-mountains-under-white-clouds-zMV7sqlJNow",
-    set: (v) =>
-      v === ""
-        ? "https://unsplash.com/photos/river-between-mountains-under-white-clouds-zMV7sqlJNow"
-        : v,
+    filename: {
+      type: String,
+    },
+    url: {
+      type: String,
+      default:
+        "https://unsplash.com/photos/river-between-mountains-under-white-clouds-zMV7sqlJNow",
+      set: (v) =>
+        v === ""
+          ? "https://unsplash.com/photos/river-between-mountains-under-white-clouds-zMV7sqlJNow"
+          : v,
+    },
   },
   price: {
     type: Number,
