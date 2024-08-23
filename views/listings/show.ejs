@@ -10,10 +10,15 @@
     <ul>
       <li><%= listing.title %></li>
       <li><%= listing.description %></li>
+      <li>&#x20B9;<%= listing.price.toLocaleString("en-IN") %></li>
       <li><%= listing.location %></li>
       <li><%= listing.country %></li>
-      <li>&#x20B9;<%= listing.price %></li>
     </ul>
-    <img src="<%= listing.image %>" alt="Home" width="200px" height="200px" />
+    <br />
+    <a href="/listings/<%= listing._id %>/edit"> Edit this listing </a>
+    <br /><br />
+    <form method="POST" action="/listings/<%= listing._id %>?_method=DELETE">
+      <button>Delete this listing</button>
+    </form>
   </body>
 </html>
