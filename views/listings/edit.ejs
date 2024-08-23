@@ -1,54 +1,43 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>WanderLust</title>
-  </head>
-  <body>
-    <form method="POST" action="/listings/<%= listing._id%>?_method=PUT">
-      <h3>Update a Existing Listing :</h3>
-      <input
-        type="text"
-        name="listing[title]"
-        placeholder="enter title"
-        value="<%= listing.title%>"
-      />
-      <br />
-      <br />
-      <textarea name="listing[description]" placeholder="enter description">
+<% layout("./layouts/boilerplate") -%>
+<body>
+  <form method="POST" action="/listings/<%= listing._id%>?_method=PUT">
+    <h3>Update a Existing Listing :</h3>
+    <input
+      type="text"
+      name="listing[title]"
+      placeholder="enter title"
+      value="<%= listing.title%>"
+    />
+    <br />
+    <br />
+    <textarea name="listing[description]" placeholder="enter description">
 <%= listing.description %></textarea
-      >
-      <br /><br />
-      <input
-        type="text"
-        name="listing[image]"
-        value="<%= listing.image.url %>"
-      />
-      <br /><br />
-      <input
-        type="number"
-        name="listing[price]"
-        placeholder="enter price"
-        value="<%= listing.price %>"
-      />
-      <br /><br />
-      <input
-        type="text"
-        name="listing[country]"
-        placeholder="enter country"
-        value="<%= listing.country %>"
-      />
-      <br /><br />
-      <input
-        type="text"
-        name="listing[location]"
-        placeholder="enter location/landmark"
-        value="<%= listing.location %>"
-      />
-      <br /><br />
-      <button>Update</button>
-      <br /><br />
-    </form>
-  </body>
-</html>
+    >
+    <br /><br />
+    <input type="text" name="listing[image]" value="<%= listing.image.url %>" />
+    <br /><br />
+    <input
+      type="number"
+      name="listing[price]"
+      placeholder="enter price"
+      value="<%= listing.price %>"
+    />
+    <br /><br />
+    <input
+      type="text"
+      name="listing[country]"
+      placeholder="enter country"
+      value="<%= listing.country %>"
+    />
+    <br /><br />
+    <input
+      type="text"
+      name="listing[location]"
+      placeholder="enter location/landmark"
+      value="<%= listing.location %>"
+    />
+    <br /><br />
+    <button>Update</button>
+    <br /><br />
+  </form>
+</body>
