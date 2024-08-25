@@ -58,8 +58,6 @@ app.post("/listings", async (req, res) => {
   // let { title, description, price, image, country, location } = req.body;
   // console.log(title, description, price, image, country, location);
   let listing = req.body.listing;
-  console.log(req.body);
-  console.log(listing);
   const newListing = new Listing(listing);
   await newListing.save();
   res.redirect("/listings");
