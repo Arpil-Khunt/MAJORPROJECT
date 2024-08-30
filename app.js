@@ -9,6 +9,7 @@ const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
 const wrapAsync = require("./utils/wrapAsync.js");
 const ExpressError = require("./utils/ExpressError.js");
+const listingSchema = require("./schemaValidation.js");
 
 //set the view engine to ejs
 app.set("view engine", "ejs");
@@ -16,6 +17,17 @@ app.set("views", path.join(__dirname, "views"));
 app.engine("ejs", ejsMate);
 //this is also valid way to render the ejs template
 //app.set("views", "./views/listings");
+
+const validateListing = (req, res, next) => {
+  let { error } = listingSchema.validate(req.body);
+
+  if (error) {
+    let errMsg = error.details.map((el) => el.message).join(",");
+    throw new ExpressError(400, errMsg);
+  } else {
+    next();
+  }
+};
 
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
@@ -67,14 +79,22 @@ app.get(
 //Create route
 app.post(
   "/listings",
+  validateListing,
   wrapAsync(async (req, res, next) => {
     // let { title, description, price, image, country, location } = req.body;
     // console.log(title, description, price, image, country, location);
 
     //handle the bad request means if listing is not available then how you store listing in the database
-    if (!req.body.listing) {
-      throw new ExpressError(400, "send valid data for listing");
-    }
+    // if (!req.body.listing) {
+    //   throw new ExpressError(400, "send valid data for listing");
+    // }
+
+    //validate the serverside schema validation using Joi npm package
+    // let result = listingSchema.validate(req.body);
+    // console.log(result);
+    // if (result.error) {
+    //   throw new ExpressError(400, result.error);
+    // }
     let listing = req.body.listing;
     const newListing = new Listing(listing);
     await newListing.save();
@@ -95,10 +115,8 @@ app.get(
 //Update route
 app.put(
   "/listings/:id",
+  validateListing(),
   wrapAsync(async (req, res) => {
-    if (!req.body.listing) {
-      throw new ExpressError(400, "send valid data for listing");
-    }
     let { id } = req.params;
     let listing = req.body.listing;
     await Listing.findByIdAndUpdate(id, listing);
@@ -124,7 +142,7 @@ app.all("*", (req, res, next) => {
 //serverside custome error handling -> error handling middleware
 app.use((err, req, res, next) => {
   let { statusCode = 500, message = "something went wrong!" } = err;
-  res.status(statusCode).send(message);
+  res.status(statusCode).render("./listings/error.ejs", { message });
 });
 
 // app.get("/testListing", async (req, res) => {
