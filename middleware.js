@@ -6,7 +6,7 @@ const Review = require("./models/review.js");
 let isLoggedIn = (req, res, next) => {
   if (!req.isAuthenticated()) {
     req.session.redirectUrl = req.originalUrl;
-    req.flash("error", "you must be logged in to create listing!");
+    req.flash("error", "you must be logged in!");
     return res.redirect("/login");
   }
   next();
@@ -30,13 +30,13 @@ let isOwner = async (req, res, next) => {
 
 //for review author
 let isReviewAuthor = async (req, res, next) => {
-  let { reviewId } = req.params;
+  let { id, reviewId } = req.params;
   let review = await Review.findById(reviewId);
   if (
     res.locals.currUser &&
     !res.locals.currUser._id.equals(review.createdBy)
   ) {
-    req.flash("error", "you are not the owner of this listing!");
+    req.flash("error", "you are not the author of this review!");
     return res.redirect(`/listings/${id}`);
   }
   next();
@@ -71,5 +71,5 @@ module.exports = {
   isOwner,
   validateListing,
   validationReview,
-  isReviewAuthor
+  isReviewAuthor,
 };

@@ -22,7 +22,8 @@
     </div>
 
     <br />
-    <% if(currUser && currUser._id.equals(userId)) {%>
+
+    <% if(currUser && currUser._id.equals(listing.owner._id)) {%>
     <div class="btns mb-3">
       <a
         href="/listings/<%= listing._id %>/edit"
@@ -34,7 +35,8 @@
         <button class="btn btn-dark offset-4">Delete</button>
       </form>
     </div>
-    <%}%>
+    <% } %>
+
     <div class="col-8 offset-3">
       <hr />
       <% if(currUser){ %>
@@ -87,7 +89,9 @@
               action="/listings/<%=listing._id%>/reviews/<%=review._id%>?_method=DELETE"
               class="mb-3"
             >
+              <% if(currUser && review.createdBy._id.equals(currUser._id)) {%>
               <button class="btn btn-sm btn-dark">Delete</button>
+              <%}%>
             </form>
           </div>
         </div>
